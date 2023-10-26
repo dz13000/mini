@@ -1,0 +1,99 @@
+{(......cmd line.......)|(.......cmd line......)|(.......cmd line........)}
+
+normal : <file cmd | cmd >file
+pas normal : >file cmd | cmd <file
+
+?????? : normal : <file cmd | cmd >file | cmd cmd >file
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Found '|'
+Your commande_line run from start to |. You should know the quoting rules to not interpret a | as a character in double or single quotes.
+Then copy the string you get (without |) into your structure commande_line (link list).
+Repeat the operation until the end of file.
+
+struct cmd_line{
+    char             *cmd;
+    stuct cmd_line   *next;
+}
+2. Separation of words in commande_line
+
+Now you got your list of commande_line, you need your list of words.
+For that, use the quoting rules and separate your commande_line in a link list of words.
+
+struct token{
+    char            *word;
+    enum            type;
+    struct token    *next;
+}
+
+struct cmd_line{
+	char                *cmd;
+    struct  token       *word;
+    struct  cmd_line    *next;
+}
+2.1 Type of words
+
+To differentiate if a word is an arg, a file or a heredoc. I set a type in my struct token following several rules.
+My type is set as an enum:
+
+enum type{
+    NONE, //defaut set
+    ARG, //word
+    FILE_IN, //word == '<'
+    HERE_DOC, // word == '<<'
+    FILE_OUT, //word == '>'
+    FILE_OUT_SUR, //word == '>>'
+    OPEN_FILE, // word following '<'
+    LIMITOR, // word following '<<'
+    EXIT_FILE, // word followinf '>'
+    EXIT_FILE_RET; // word following '>>'
+}
+Be careful, of syntax error near unexpected token 'x'.
+Example :
+ cat > > file_out
+
+2.2 Expand word
+
+To expand each word, there are different rules depending on the Type.
+For each word, you have to cut space at start and at the end of it.
+Then expand each quotes following the quoting rules and skip the quotes.
+For env var, you have to check if it exist in env, if it's doesn't exit just skip it.
+Example :
+word :                 "cou'cou"$lol'$USER   'a became word : cou'cou$USER   a (here $lol don't exist)
+
+!!! Special Case 1
+If a env is set like  export LS="ls -la". First, in double quotes it is considered as a single word : ls -la .
+Second, if it's not quotes, you have to split it on the space considering it as 2 words:
+
+word1 : ls
+word2 : -la
+Example in bash :
+
+Export LS="ls -la"
+$LS // this should do a ls -la
+"$LS" // this should print an error command "ls -la" not found
+!!! Special Case 2
+For type limitors expand you have to not expand env var.
+For example try :
+cat << $HOME
+
+!!! Special Case 3
+For type IN_FILE and EXIT_FILE you do not have to split env on space,
+Exemple in bash :
+
+$> Export t="ha  ha"
+$> echo baguette > $t
+$> ls
+'ha  ha'
+$> cat < $t
+baguette
+2.3 Expand env
+
+Has you see higher,
+According to the type of the word, you have to expand the env with differents rules,
+In all cases, a env variable start by '$' and can only be compose by alphanum characters + _
+$? is not consider as a env variable but as the exit_status and ? is not a alphanum character.
+And in case of $$ I consider it as $
+
+
+< "IN" en applique la commande au contenue du fichier
+> "OUT" en vas ecrire le resultat de la commande dans le fichier
