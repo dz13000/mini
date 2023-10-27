@@ -6,7 +6,7 @@
 /*   By: cabouzir <cabouzir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 11:44:36 by mabed             #+#    #+#             */
-/*   Updated: 2023/10/26 15:01:25 by cabouzir         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:06:52 by cabouzir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_list
 	t_data				*data;
 	t_tokens			token;
 	int					indice;
-	char				**msg_err;
 }						t_list;
 
 typedef struct s_data
@@ -125,6 +124,8 @@ int						nb_cmd(t_list *lst);
 void					get_token3(t_list **list);
 void					get_token4(t_list **list);
 void					get_token5(t_list **list);
+void					alloc_msg(t_data *data);
+int						syntax_error2(t_data *data, t_list *tmp);
 // void		ft_positive(char *line);
 // t_list		*ft_lstnew(char content, t_data *dbl_list);
 // t_list		*ft_lstadd_back(t_list **lst, t_list *new);

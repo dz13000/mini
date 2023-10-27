@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_quote2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabed <mabed@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cabouzir <cabouzir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:06:44 by mabed             #+#    #+#             */
-/*   Updated: 2023/10/19 16:40:35 by mabed            ###   ########.fr       */
+/*   Updated: 2023/10/27 13:42:35 by cabouzir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,57 @@ char	*replace_alpha_null(t_list *lst, int i)
 	return (str);
 }
 
-char	*replace_alpha_env(t_list *lst, char *str, int i)
+typedef struct s_var
 {
 	int		j;
 	int		k;
 	int		l;
 	char	*tmp;
+}t_var;
 
-	j = 0;
-	k = 0;
-	l = var_env_len(str) + 1;
-	tmp = malloc(sizeof(char) * (ft_strlen(lst->content)
-				- var_dollar_len(lst->content + i) + ft_strlen(str + l)));
-	while (lst->content[j])
+void	alloc_var(t_var *var, char *str, int i, t_list *lst)
+{
+	var->j = 0;
+	var->j = 0;
+	var->l = var_env_len(str) + 1;
+	var->tmp = malloc(sizeof(char) * (ft_strlen(lst->content)
+				- var_dollar_len(lst->content + i) + ft_strlen(str + var->l)));
+}
+
+char	*replace_alpha_env(t_list *lst, char *str, int i)
+{
+	// int		j;
+	// int		k;
+	// int		l;
+	// char	*tmp;
+	t_var var;
+
+	// j = 0;
+	// k = 0;
+	// val = var_env_len(str) + 1;
+	alloc_var(&var, str, i, &*lst);
+	// var.tmp = malloc(sizeof(char) * (ft_strlen(lst->content)
+	// 			- var_dollar_len(lst->content + i) + ft_strlen(str + var.l)));
+	while (lst->content[var.j])
 	{
-		if (j == (i - 1))
+		if (var.j == (i - 1))
 		{
-			j = j + var_dollar_len(lst->content + i) + 1;
-			while (str[l])
+			var.j = var.j + var_dollar_len(lst->content + i) + 1;
+			while (str[var.l])
 			{
-				tmp[k] = str[l];
-				k++;
-				l++;
+				var.tmp[var.k] = str[var.l];
+				var.k++;
+				var.l++;
 			}
 		}
-		if (lst->content[j])
+		if (lst->content[var.j])
 		{
-			tmp[k] = lst->content[j];
-			j++;
-			k++;
+			var.tmp[var.k] = lst->content[var.j];
+			var.j++;
+			var.k++;
 		}
 	}
-	tmp[k] = '\0';
+	var.tmp[var.k] = '\0';
 	free (lst->content);
-	return (tmp);
+	return (var.tmp);
 }
