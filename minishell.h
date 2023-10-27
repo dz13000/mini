@@ -60,6 +60,7 @@ typedef struct s_list
 	t_data				*data;
 	t_tokens			token;
 	int					indice;
+	char				**msg_err;
 }						t_list;
 
 typedef struct s_data
@@ -83,8 +84,8 @@ char					*c_to_str(char c);
 void					join_link(t_data *data);
 t_tokens				get_token(char *str);
 int						syntax_error(t_data *data);
-int						verif_spaces_chevron(t_list *tmp);
-int						verif_pipe(t_list *tmp);
+int						verif_spaces_chevron(t_list *tmp, t_data *data);
+int						verif_pipe(t_list *tmp, t_data *data);
 t_env					*ft_envnew(char *content);
 t_env					*ft_envadd_back(t_env **lst, t_env *new);
 t_env					*creat_env_lst(char **content);
@@ -112,7 +113,7 @@ void					free_data(t_data *data);
 void					free_env(t_env *env);
 char					**env2(t_env *env);
 void					del_empty_join_quote(t_data *data);
-int						verif_chev_next_chev(t_list *tmp);
+int						verif_chev_next_chev(t_list *tmp, t_data *data);
 t_list					*ft_lstnew2(t_data *data, char content, int i);
 void					creat_list2(char *str, t_data *dbl_list, t_list **first,
 							t_list **last);

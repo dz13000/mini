@@ -35,7 +35,7 @@ void	free_data(t_data *data)
 int	main(int ac, char **av, char **env)
 {
 	char			*line;
-	static t_data	data = {NULL, NULL, 0, NULL, NULL, NULL};
+	static t_data	data = {NULL, NULL, 0, NULL, NULL, NULL, NULL};
 	t_list			*list;
 	int				i;
 	const char *tab[18] = {"SPACES", "REDIRECTION_IN", "REDIRECTION_OUT", "PIPE", "ALPHANUMERIC", "DOLLAR", "INTERRO", "SIMPLE_QUOTE", "DOUBLE_QUOTE", "CMD", "FILE_IN", "HERE_DOC", "FILE_OUT", "FILE_OUT_SUR", "OPEN_FILE", "LIMITOR", "EXIT_FILE", "EXIT_FILE_RET"};

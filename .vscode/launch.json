@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/camil/Documents/minishrek",
-      "program": "/Users/camil/Documents/minishrek/build/Debug/outDebug"
+      "cwd": "/Users/camil/norme/minishell",
+      "program": "/Users/camil/norme/minishell/build/Debug/outDebug"
     }
   ]
 }
